@@ -2,6 +2,8 @@
 
 Generates a spiral of primes based on Sergey Porshnev's paper "On the issues of prime numbers' and twin primes' distribution on the Ulam spiral".
 
+https://cloudofscience.ru/sites/default/files/pdf/CoS_4_593.pdf
+
 Given the first N primes `P_i`, `i=1..N`, each plotted point has the coordinates:
 
 `x = P_i * cos(i)
