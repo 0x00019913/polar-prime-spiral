@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#content {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  text-align: center;
+  border: 0;
+}
