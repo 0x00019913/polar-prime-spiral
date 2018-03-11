@@ -37,13 +37,13 @@ Stage.prototype.clear = function() {
 Stage.prototype.render = function() {
   var dim = Math.min(window.innerWidth, window.innerHeight);
 
+  var r = this.radius;
   var wmargin = 15;
   var hmargin = 15;
-  var wtotal = dim - 4;
-  var htotal = dim - 4;
+  var wtotal = dim - r * 4;
+  var htotal = dim - r * 4;
   var wimg = wtotal - wmargin * 2;
   var himg = htotal - hmargin * 2;
-  var r = this.radius;
 
   var periodFactor = this.periodFactor;
 
