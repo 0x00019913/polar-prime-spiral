@@ -1,6 +1,6 @@
 function Stage() {
   this.N = 20000;
-  this.r = 1.5;
+  this.radius = 1.5;
   this.periodFactor = 1;
 
   this.content = document.getElementById("content");
@@ -15,8 +15,10 @@ function Stage() {
   this.gui = gui;
 
   gui.add(this, "N").min(2);
-  gui.add(this, "r");
+  gui.add(this, "radius");
   gui.add(this, "periodFactor");
+  this.mode = 1;
+  gui.add(this, "mode", { "prime numbers": 1, "natural numbers": 2 });
   gui.add(this, "recalculate");
 
   this.render();
@@ -41,23 +43,31 @@ Stage.prototype.render = function() {
   var htotal = dim - 4;
   var wimg = wtotal - wmargin * 2;
   var himg = htotal - hmargin * 2;
-  var r = this.r;
+  var r = this.radius;
 
   var periodFactor = this.periodFactor;
 
   var tooltip = this.tooltip;
 
-  var primes = eratosthenes(this.N);
+  var source;
+  if (this.mode === 1) {
+    source = eratosthenes(this.N);
+  }
+  else {
+    source = [];
+    for (var i=0; i<this.N; i++) source.push(i+1);
+  }
+
   var indices = [];
 
-  var np = primes.length;
-  for (var i = 0; i < np; i++) indices.push(i+1);
+  var ns = source.length;
+  for (var i = 0; i < ns; i++) indices.push(i+1);
 
   var data = [];
 
   // data is a set of (x,y) tuples
-  for (var i=0; i<np; i++) {
-    var p = primes[i];
+  for (var i=0; i<ns; i++) {
+    var p = source[i];
     var idx = indices[i] * periodFactor;
 
     data.push({
@@ -109,7 +119,7 @@ Stage.prototype.render = function() {
         .style("opacity", 1);
       tooltip
         .html(
-          "value: " + primes[d.i] + "<br/>" +
+          "value: " + source[d.i] + "<br/>" +
           "index: " + d.i
         )
         .style("left", d3.event.pageX + "px")
