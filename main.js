@@ -1,13 +1,21 @@
 function Stage() {
   this.N = 20000;
+  this.r = 1.5;
   this.periodFactor = 1;
 
   this.content = document.getElementById("content");
+
+  this.tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
   var gui = new dat.GUI();
   this.gui = gui;
 
   gui.add(this, "N").min(2);
+  gui.add(this, "r");
   gui.add(this, "periodFactor");
   gui.add(this, "recalculate");
 
@@ -33,9 +41,11 @@ Stage.prototype.render = function() {
   var htotal = dim - 4;
   var wimg = wtotal - wmargin * 2;
   var himg = htotal - hmargin * 2;
-  var r = 1;
+  var r = this.r;
 
   var periodFactor = this.periodFactor;
+
+  var tooltip = this.tooltip;
 
   var primes = eratosthenes(this.N);
   var indices = [];
@@ -52,7 +62,8 @@ Stage.prototype.render = function() {
 
     data.push({
       x: p * Math.cos(idx),
-      y: p * Math.sin(idx)
+      y: p * Math.sin(idx),
+      i: i
     });
   }
 
@@ -90,7 +101,26 @@ Stage.prototype.render = function() {
     .attr("cx", fx)
     .attr("cy", fy)
     .attr("r", r)
-    .style("fill", "black");
+    .style("fill", "black")
+    .on("mouseover", function(d) {
+      tooltip
+        .transition()
+        .duration(0)
+        .style("opacity", 1);
+      tooltip
+        .html(
+          "value: " + primes[d.i] + "<br/>" +
+          "index: " + d.i
+        )
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px");
+    })
+    .on("mouseout", function(d) {
+      tooltip
+        .transition()
+        .duration(0)
+        .style("opacity", 0);
+    });
 }
 
 var stage = new Stage();
