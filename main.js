@@ -50,7 +50,7 @@ Stage.prototype.render = function() {
   var tooltip = this.tooltip;
 
   var source;
-  if (this.mode === 1) {
+  if (this.mode == 1) {
     source = eratosthenes(this.N);
   }
   else {
